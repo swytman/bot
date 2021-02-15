@@ -1,0 +1,2 @@
+deribit_sync: ruby ./lib/deribit_sync.rb
+ftx_sync: ruby ./lib/ftx_sync.rb

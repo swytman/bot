@@ -1,0 +1,19 @@
+version: '3'
+services:
+  bot:
+    build: .
+    command: ["foreman", "start"]
+    environment:
+      FTX_API_KEY: ${FTX_API_KEY}
+      FTX_API_SECRET: ${FTX_API_SECRET}
+      DERIBIT_CLIENT_SECRET: ${DERIBIT_CLIENT_SECRET}
+      DERIBIT_CLIENT_ID: ${DERIBIT_CLIENT_ID}
+      DERIBIT_HOST: ${DERIBIT_HOST}
+      DERIBIT_WS_HOST: ${DERIBIT_WS_HOST}
+      DELTA: ${DELTA}
+      FTX_HOST: ${FTX_HOST}
+    depends_on:
+      - 'redis'
+  redis:
+    image: redis
+    command: ["sh", "-c", "exec redis-server"]
