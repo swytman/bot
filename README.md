@@ -63,6 +63,6 @@ Only one test for order's amount and price calculation was done :(
 
 ## Question
 
-####Briefly write why in your opinion the bot will not work(=will not make money for you)
+*Q: Briefly write why in your opinion the bot will not work(=will not make money for you)*
 
 It won't work because of exchange's trade and withdrawal fees and competition with other bots, at least if you have low volumes.
