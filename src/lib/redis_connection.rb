@@ -8,7 +8,9 @@ class RedisConnection
     end
 
     def fetch_ftx_orderbook
-      JSON.parse(RedisConnection.redis.get('ftx_orderbook'))
+      orderbook = RedisConnection.redis.get('ftx_orderbook')
+
+      JSON.parse(orderbook) unless orderbook.nil?
     end
 
     def set_ftx_orderbook(orderbook)
@@ -28,7 +30,9 @@ class RedisConnection
     end
 
     def fetch_deribit_orderbook
-      JSON.parse(RedisConnection.redis.get('deribit_orderbook'))
+      orderbook = RedisConnection.redis.get('deribit_orderbook')
+
+      JSON.parse(orderbook) unless orderbook.nil?
     end
 
     def unblock_decision

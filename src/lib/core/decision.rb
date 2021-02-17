@@ -6,13 +6,13 @@ module Core
     attr_reader :ftx_bids, :ftx_asks, :deribit_bids, :deribit_asks, :delta
 
     def initialize
-      ftx_orderbook = RedisConnection.fetch_ftx_orderbook
-      deribit_orderbook = RedisConnection.fetch_deribit_orderbook
+      ftx_orderbook = RedisConnection.fetch_ftx_orderbook || empty_order_book
+      deribit_orderbook = RedisConnection.fetch_deribit_orderbook || empty_order_book
       @ftx_bids = ftx_orderbook.dig('bids')[0..9]
       @ftx_asks = ftx_orderbook.dig('asks')[0..9]
       @deribit_bids = deribit_orderbook.dig('bids')[0..9]
       @deribit_asks = deribit_orderbook.dig('asks')[0..9]
-      @delta = ENV['DELTA'].to_f
+      @delta = ENV['DELTA'].to_f || 0
     end
 
     def call
@@ -23,6 +23,10 @@ module Core
     end
 
     private
+
+    def empty_order_book
+      { 'bids' => [], 'asks' => []}
+    end
 
     def wrap_lock
       return if RedisConnection.decision_blocked?
@@ -61,10 +65,14 @@ module Core
     end
 
     def diff_deribit_to_ftx
+      return -1 if ftx_bids.size.zero? || deribit_asks.size.zero?
+
       diff_percent(ftx_bids[0][0], deribit_asks[0][0])
     end
 
     def diff_ftx_to_deribit
+      return -1 if deribit_bids.size.zero? || ftx_asks.size.zero?
+
       diff_percent(deribit_bids[0][0], ftx_asks[0][0])
     end
 
